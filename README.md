@@ -49,26 +49,30 @@ All models were adjusted for baseline characteristics: **age**, **gender**, **ra
 
 ---
 
-## Analytical Tools & Skills Demonstrated
+### Analytical Tools & Skills Demonstrated
 
-- **Data Wrangling & Cleaning**
-  - Wide-to-long transformation using `pivot_longer()` (R) and `ARRAY`/`RENAME` (SAS)
-  - Re-coding categorical variables, labeling, and variable engineering (e.g. age groups)
-  - Advanced use of `PROC SQL`, `PROC FORMAT`, `dplyr`, `data.table`
+This project was initially developed in **SAS**, which handled the bulk of the data cleaning, transformation, and modeling. Later, **R code** was added to demonstrate proficiency with the same analytical workflow in a different environment.
 
-- **Missing Data Handling**
-  - Defined custom thresholds for exclusion
-  - Imputed missing time-varying data using **Last Observation Carried Forward (LOCF)**
+#### Programming Languages & Tools
+- **SAS**: `PROC SQL`, `PROC FORMAT`, `PROC MIXED`, `PROC PHREG`, DATA step arrays, regular expression
+- **R**: `dplyr`, `tidyr`, `ggplot2`, `data.table`, `nlme`, `survival`, `table1`, regular expression
 
-- **Longitudinal Modeling**
-  - Linear mixed-effects models with random intercepts/slopes
-  - Tested multiple covariance structures (AR(1), ARMA(1,1), TOEP)
-  - Decomposed time-varying effects (within vs. between subjects)
+#### Data Management & Transformation
+- Wide-to-long restructuring using `pivot_longer()` (R) and `ARRAY`/`RENAME` (SAS)
+- Variable recoding, labeling, and engineering (e.g., age groups)
+- Consistent missing data handling using LOCF
 
-- **Survival Analysis**
-  - Time-varying Cox models using `survSplit()` (R) and `PROC PHREG` (SAS)
-  - Proportional hazards assumption checks using interaction terms
-  - Mediation analysis through comparison of nested models (likelihood ratio tests)
+#### Longitudinal Modeling
+- Fitted mixed-effects models with `nlme` (R) and `PROC MIXED` (SAS)
+- Systematic selection of:
+  - Random effects (intercepts/slopes)
+  - Covariance structures (e.g., AR(1), ARMA(1,1), TOEP)
+  - Fixed effects, including decomposition of within vs. between-subject effects
+
+#### Survival Analysis & Mediation
+- Time-to-event modeling with time-varying covariates via `survival` (R) and `PROC PHREG` (SAS)
+- Proportional hazards checks using interaction terms and visual diagnostics
+- Mediation analysis by comparing nested models using likelihood ratio tests
 
 ---
 
@@ -76,9 +80,8 @@ All models were adjusted for baseline characteristics: **age**, **gender**, **ra
 
 | File            | Description                                        |
 |------------------|----------------------------------------------------|
-| `workplace_harassment-chronic_disease.sas`   | Full SAS pipeline: cleaning, modeling, diagnostics |
-| `workplace_harassment-chronic_disease.R`       | R code: data wrangling, modeling, plots            |
-| `summary.png`    | Visual diagram of mediation model                  |
+| `workplace_harassment-chronic_disease.sas`   | SAS code: cleaning, plots, modeling |
+| `workplace_harassment-chronic_disease.R`       | R code: cleaning, plots, modeling     |
 
 
 ---

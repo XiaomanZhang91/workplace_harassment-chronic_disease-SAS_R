@@ -713,9 +713,45 @@ shn0_long_SAS <- shn0_long %>%
 
 write.csv(shn0_long_SAS, "shn0_long.csv")
 
+# 4.2 Mixed-effects model
+library(nlme)
+# Backward selection on var-cov structure and fixed effects were based on AIC and likelihood-ratio test. The code for the two best models are shown below.
+# Note: age_group and occupation group are significant in the cox models, so they were forced in the mrm model to make sure three models in the mediation triangle have been adjusted for the same cov
+
+mrm_1 <- lme(
+  cesd ~ time + nsh*time + seq*time + age_group + group+,
+  random = ~ 1 | caseid,
+  correlation = corARMA(form = ~ time | caseid, p=1, q=1),
+  data = shn0_mem,
+  method = "ML",
+  na.action = na.omit
+)
+summary(mrm_1)
+mrm_2 <- gls(
+  cesd ~ time + nsh*time + seq*time + age_group + group,
+  correlation = corARMA(form = ~ time | caseid, p=1, q=1),
+  data = shn0_mem,
+  method = "ML",
+  na.action = na.omit
+)
+summary(mrm_1)
+summary(mrm_2)$tTable
+anova(mrm_1,mrm_2)
+
+# Decompose the between and within effect of time-varying covs
+# Insignificant terms were removed
+mrm_final <- gls(
+  cesd ~ time + mean_nsh*time + mean_seq + dev_nsh + dev_seq*time + age_group + group,
+  correlation = corARMA(form = ~ time | caseid, p=1, q=1),
+  data = shn0_mem,
+  method = "ML",
+  na.action = na.omit
+)
+summary(mrm_final)
+summary(mrm_final)$tTable
 
 
-# 4.2 Mean Plots for Interpreting the Mixed-effects Model
+# 4.3 Mean Plots for Interpreting the Mixed-effects Model
 library(ggplot2)
 
 # summary(shn0_long1)
@@ -812,21 +848,5 @@ ggplot(pred_cesd_df, aes(x = time, y = pred_cesd, color = mean_nsh)) +
 
 
 
-# 5. Likelihood Ratio Test
-
-# MRM var-cov selection (age as ordinal)
-LRT <- 16799.7-16798
-(1-pchisq(LRT,1))/2
-
-# MRM: decomposed model vs undecomposed model
-LRT <- 16799.7-16771.4
-1-pchisq(LRT,4)
-
-LRT <- 16780.5-16777.3
-1-pchisq(LRT,1)
-
-# Cox model with age_group as multinomial vs as ordinal
-LRT <- 3285.183-3279.388
-1-pchisq(LRT,2)
 
 
